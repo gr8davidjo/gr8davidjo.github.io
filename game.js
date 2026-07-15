@@ -33,7 +33,7 @@
       this.reset(true);
       this.render();
       this.syncUi();
-      this.showOverlay('Press Start or move with arrows/WASD.');
+      this.showOverlay('시작 버튼을 누르거나 방향키/WASD로 움직여 주세요.');
     }
 
     bindEvents() {
@@ -126,7 +126,7 @@
       this.state = 'paused';
       this.clearLoop();
       this.syncUi();
-      this.showOverlay('Paused. Press Resume or Space.');
+        this.showOverlay('일시정지되었습니다. 재개 버튼이나 Space 키를 누르세요.');
     }
 
     resume() {
@@ -231,13 +231,13 @@
         this.clearLoop();
         this.updateBest();
         this.render();
-        this.showOverlay('Game over. Press Restart.');
+      this.showOverlay('게임 오버입니다. 재시작을 눌러 다시 시작하세요.');
         return;
       }
 
       this.state = 'recovering';
       this.clearLoop();
-      this.showOverlay('Life lost. Restarting the round.');
+      this.showOverlay('목숨을 잃었습니다. 잠시 후 다시 시작합니다.');
       this.restartTimeoutId = window.setTimeout(() => {
         this.restartTimeoutId = null;
         this.snake = [
@@ -348,24 +348,24 @@
       this.bestEl.textContent = String(this.bestScore);
       this.livesEl.textContent = String(this.lives);
       this.stateEl.textContent = this.state === 'running'
-        ? 'Playing'
+        ? '진행 중'
         : this.state === 'paused'
-          ? 'Paused'
+          ? '일시정지'
           : this.state === 'gameover'
-            ? 'Game Over'
+            ? '게임 오버'
             : this.state === 'recovering'
-              ? 'Recovering'
-              : 'Idle';
+              ? '복구 중'
+              : '대기';
 
       if (this.state === 'running') {
-        this.startBtn.textContent = 'Start';
-        this.pauseBtn.textContent = 'Pause';
+        this.startBtn.textContent = '시작';
+        this.pauseBtn.textContent = '일시정지';
       } else if (this.state === 'paused') {
-        this.startBtn.textContent = 'Start';
-        this.pauseBtn.textContent = 'Resume';
+        this.startBtn.textContent = '시작';
+        this.pauseBtn.textContent = '재개';
       } else {
-        this.startBtn.textContent = 'Start';
-        this.pauseBtn.textContent = 'Pause';
+        this.startBtn.textContent = '시작';
+        this.pauseBtn.textContent = '일시정지';
       }
     }
 
