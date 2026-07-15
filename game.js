@@ -2,8 +2,8 @@
   const GRID_SIZE = 24;
   const INITIAL_LIVES = 3;
   const BASE_SPEED = 110;
-  const BONUS_COLORS = ['#ef4444', '#f59e0b', '#10b981', '#8b5cf6', '#0ea5e9'];
   const FOOD_COLORS = ['#ef4444', '#f97316', '#f59e0b', '#22c55e', '#06b6d4', '#a855f7'];
+  const BONUS_COLORS = ['#f4d07f', '#f59e0b', '#fcd34d', '#10b981', '#38bdf8', '#fb7185'];
   const HIGHEST_KEY = 'gr8davidjo-snake-high-score';
 
   class SnakeGame {
@@ -33,21 +33,24 @@
       this.reset(true);
       this.render();
       this.syncUi();
-      this.showOverlay('시작 버튼을 누르거나 방향키/WASD로 움직여 주세요.');
+      this.showOverlay('Press Start or use Arrow keys, WASD, or swipe on mobile.');
     }
 
     bindEvents() {
       window.addEventListener('resize', this.resizeHandler);
       window.addEventListener('keydown', this.keyHandler);
+
       this.stage.addEventListener('pointerdown', (event) => {
         this.pointerStart = { x: event.clientX, y: event.clientY };
       });
+
       this.stage.addEventListener('pointerup', (event) => {
         if (!this.pointerStart) return;
         const dx = event.clientX - this.pointerStart.x;
         const dy = event.clientY - this.pointerStart.y;
         this.pointerStart = null;
         if (Math.max(Math.abs(dx), Math.abs(dy)) < 24) return;
+
         if (Math.abs(dx) > Math.abs(dy)) {
           this.queueDirection(dx > 0 ? 'right' : 'left');
         } else {
@@ -75,7 +78,7 @@
 
     resize() {
       const rect = this.stage.getBoundingClientRect();
-      const size = Math.max(240, Math.floor(Math.min(rect.width, rect.height)));
+      const size = Math.max(220, Math.floor(Math.min(rect.width || 360, rect.height || 360)));
       const dpr = window.devicePixelRatio || 1;
       this.canvas.width = Math.floor(size * dpr);
       this.canvas.height = Math.floor(size * dpr);
@@ -99,6 +102,7 @@
       this.bonusExpiresAt = 0;
       this.bonusCooldown = this.randomBetween(90, 140);
       this.food = this.spawnCell(this.snake);
+      this.foodColor = this.choice(FOOD_COLORS);
       this.gameOver = false;
       this.state = fresh ? 'idle' : this.state;
       this.clearPendingRestart();
@@ -109,16 +113,25 @@
       if (this.gameOver) {
         this.reset(true);
       }
+
       if (this.loopId != null) {
         this.state = 'running';
         this.syncUi();
         this.hideOverlay();
         return;
       }
+
       this.state = 'running';
       this.loopId = window.setInterval(() => this.tick(), this.speed);
       this.syncUi();
       this.hideOverlay();
+    }
+
+    restartLoop() {
+      if (this.loopId != null) {
+        window.clearInterval(this.loopId);
+        this.loopId = window.setInterval(() => this.tick(), this.speed);
+      }
     }
 
     pause() {
@@ -126,7 +139,7 @@
       this.state = 'paused';
       this.clearLoop();
       this.syncUi();
-        this.showOverlay('일시정지되었습니다. 재개 버튼이나 Space 키를 누르세요.');
+      this.showOverlay('Paused. Press Resume or Space to continue.');
     }
 
     resume() {
@@ -179,25 +192,24 @@
       }
 
       this.snake.unshift(nextHead);
-      let ateFood = false;
-      let ateBonus = false;
+      let shouldSpeedUp = false;
 
       if (this.sameCell(nextHead, this.food)) {
-        ateFood = true;
         this.score += 10;
-        this.speed = Math.max(70, BASE_SPEED - Math.floor(this.score / 40) * 8);
         this.food = this.spawnCell(this.snake);
+        this.foodColor = this.choice(FOOD_COLORS);
         this.bonusCooldown = this.randomBetween(80, 130);
+        this.speed = Math.max(70, BASE_SPEED - Math.floor(this.score / 40) * 8);
+        shouldSpeedUp = true;
       } else {
         this.snake.pop();
       }
 
       if (this.bonus && this.sameCell(nextHead, this.bonus.position)) {
-        ateBonus = true;
         this.lives += 1;
+        this.score += 5;
         this.bonus = null;
         this.bonusCooldown = this.randomBetween(85, 140);
-        this.score += 5;
       }
 
       this.bonusCooldown -= 1;
@@ -213,12 +225,12 @@
         }
       }
 
-      if (ateFood || ateBonus) {
-        this.syncUi();
-      } else {
-        this.syncUi();
-      }
+      this.syncUi();
       this.render();
+
+      if (shouldSpeedUp) {
+        this.restartLoop();
+      }
     }
 
     handleCrash() {
@@ -231,13 +243,13 @@
         this.clearLoop();
         this.updateBest();
         this.render();
-      this.showOverlay('게임 오버입니다. 재시작을 눌러 다시 시작하세요.');
+        this.showOverlay('Game over. Press Restart to play again.');
         return;
       }
 
       this.state = 'recovering';
       this.clearLoop();
-      this.showOverlay('목숨을 잃었습니다. 잠시 후 다시 시작합니다.');
+      this.showOverlay('A life was lost. Recovering shortly.');
       this.restartTimeoutId = window.setTimeout(() => {
         this.restartTimeoutId = null;
         this.snake = [
@@ -248,6 +260,7 @@
         this.direction = { x: 1, y: 0 };
         this.nextDirection = { x: 1, y: 0 };
         this.food = this.spawnCell();
+        this.foodColor = this.choice(FOOD_COLORS);
         this.bonus = null;
         this.bonusCooldown = this.randomBetween(85, 135);
         this.state = 'running';
@@ -266,6 +279,7 @@
     spawnCell(blocked = []) {
       let position = null;
       let attempts = 0;
+
       do {
         position = {
           x: Math.floor(Math.random() * GRID_SIZE),
@@ -273,6 +287,7 @@
         };
         attempts += 1;
       } while (blocked.some((cell) => this.sameCell(cell, position)) && attempts < 300);
+
       return position;
     }
 
@@ -348,25 +363,17 @@
       this.bestEl.textContent = String(this.bestScore);
       this.livesEl.textContent = String(this.lives);
       this.stateEl.textContent = this.state === 'running'
-        ? '진행 중'
+        ? 'Running'
         : this.state === 'paused'
-          ? '일시정지'
+          ? 'Paused'
           : this.state === 'gameover'
-            ? '게임 오버'
+            ? 'Game Over'
             : this.state === 'recovering'
-              ? '복구 중'
-              : '대기';
+              ? 'Recovering'
+              : 'Ready';
 
-      if (this.state === 'running') {
-        this.startBtn.textContent = '시작';
-        this.pauseBtn.textContent = '일시정지';
-      } else if (this.state === 'paused') {
-        this.startBtn.textContent = '시작';
-        this.pauseBtn.textContent = '재개';
-      } else {
-        this.startBtn.textContent = '시작';
-        this.pauseBtn.textContent = '일시정지';
-      }
+      this.startBtn.textContent = this.state === 'gameover' ? 'Restart' : 'Start';
+      this.pauseBtn.textContent = this.state === 'paused' ? 'Resume' : 'Pause';
     }
 
     updateBest() {
@@ -387,12 +394,12 @@
 
     render() {
       const rect = this.canvas.getBoundingClientRect();
-      const size = Math.max(240, Math.floor(Math.min(rect.width || 480, rect.height || 480)));
+      const size = Math.max(220, Math.floor(Math.min(rect.width || 360, rect.height || 360)));
       const cell = size / GRID_SIZE;
       const ctx = this.ctx;
 
       ctx.clearRect(0, 0, size, size);
-      ctx.fillStyle = '#ffffff';
+      ctx.fillStyle = '#0f131b';
       ctx.fillRect(0, 0, size, size);
 
       this.drawGrid(ctx, size, cell);
@@ -404,8 +411,9 @@
 
     drawGrid(ctx, size, cell) {
       ctx.save();
-      ctx.strokeStyle = 'rgba(17, 24, 39, 0.05)';
+      ctx.strokeStyle = 'rgba(199, 162, 75, 0.08)';
       ctx.lineWidth = 1;
+
       for (let i = 0; i <= GRID_SIZE; i += 1) {
         const pos = Math.round(i * cell) + 0.5;
         ctx.beginPath();
@@ -417,13 +425,21 @@
         ctx.lineTo(size, pos);
         ctx.stroke();
       }
+
       ctx.restore();
     }
 
     drawFood(ctx, cell) {
       ctx.save();
-      ctx.fillStyle = this.choice(FOOD_COLORS);
-      this.roundRect(ctx, this.food.x * cell + 3, this.food.y * cell + 3, cell - 6, cell - 6, Math.max(4, cell * 0.25));
+      ctx.fillStyle = this.foodColor;
+      this.roundRect(
+        ctx,
+        this.food.x * cell + 3,
+        this.food.y * cell + 3,
+        cell - 6,
+        cell - 6,
+        Math.max(4, cell * 0.25),
+      );
       ctx.fill();
       ctx.restore();
     }
@@ -439,7 +455,7 @@
       ctx.fillStyle = this.bonus.color;
       ctx.beginPath();
       for (let i = 0; i < 10; i += 1) {
-        const angle = Math.PI / 5 * i - Math.PI / 2;
+        const angle = (Math.PI / 5) * i - Math.PI / 2;
         const r = i % 2 === 0 ? radius : radius * 0.48;
         const sx = px + Math.cos(angle) * r;
         const sy = py + Math.sin(angle) * r;
@@ -456,13 +472,12 @@
         const px = segment.x * cell + 2;
         const py = segment.y * cell + 2;
         const size = cell - 4;
-        const hue = 44 + index * 7;
         ctx.save();
-        ctx.fillStyle = index === 0 ? '#111827' : `hsl(${hue % 360} 68% 42%)`;
+        ctx.fillStyle = index === 0 ? '#f5d084' : `hsl(${44 + index * 7} 68% 42%)`;
         this.roundRect(ctx, px, py, size, size, Math.max(5, cell * 0.22));
         ctx.fill();
         if (index === 0) {
-          ctx.fillStyle = '#f4d07f';
+          ctx.fillStyle = '#111827';
           ctx.beginPath();
           ctx.arc(px + size * 0.68, py + size * 0.32, Math.max(1.4, cell * 0.09), 0, Math.PI * 2);
           ctx.fill();
@@ -473,7 +488,7 @@
 
     drawBorder(ctx, size) {
       ctx.save();
-      ctx.strokeStyle = 'rgba(17, 24, 39, 0.15)';
+      ctx.strokeStyle = 'rgba(199, 162, 75, 0.24)';
       ctx.lineWidth = 2;
       ctx.strokeRect(1, 1, size - 2, size - 2);
       ctx.restore();
