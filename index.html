@@ -3,15 +3,17 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="세련되고 심플한 개인 프로페셔널 웹사이트">
+  <meta name="description" content="다크 & 골드 테마의 정적 개인 프로페셔널 웹사이트와 지렁이 게임">
   <title>Gr8 David Jo | Portfolio</title>
   <link rel="stylesheet" href="styles.css">
   <script defer src="script.js"></script>
+  <script defer src="game.js"></script>
 </head>
 <body>
+  <a class="skip-link" href="#home">Skip to content</a>
   <header class="site-header">
     <div class="brand">
-      <span class="brand-mark">GJ</span>
+      <span class="brand-mark" aria-hidden="true">GJ</span>
       <div>
         <p class="eyebrow">Portfolio</p>
         <h1>Gr8 David Jo</h1>
@@ -19,47 +21,209 @@
     </div>
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
     <nav id="site-nav" class="site-nav" aria-label="Main navigation">
+      <a href="#home">Home</a>
       <a href="#about">About</a>
-      <a href="#skills">Skills</a>
+      <a href="#projects">Projects</a>
+      <a href="#experience">Experience</a>
+      <a href="#research">Research</a>
       <a href="#games">Games</a>
       <a href="#contact">Contact</a>
     </nav>
   </header>
 
   <main>
-    <section class="hero">
-      <p class="eyebrow">Professional • Responsive • Minimal</p>
-      <h2>다크 &amp; 골드 테마의 정적 프로페셔널 웹사이트</h2>
-      <p>이번 루프에서는 기본 구조와 `Games` 진입점만 준비하고, 게임 본체는 다음 루프로 넘긴다.</p>
+    <section id="home" class="hero panel hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow">Professional • Responsive • Minimal</p>
+        <h2>Systems thinking, shipped with a calm dark-gold finish.</h2>
+        <p>
+          정적 HTML, CSS, JavaScript만으로 개인 프로페셔널 사이트를 구성하고,
+          `Games` 메뉴에서 지렁이 게임으로 자연스럽게 이어지도록 설계했다.
+        </p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#games">Play Games</a>
+          <a class="button button-secondary" href="#contact">Contact</a>
+        </div>
+      </div>
+
+      <aside class="hero-card">
+        <p class="eyebrow">Focus</p>
+        <ul class="focus-list">
+          <li>On-device AI systems</li>
+          <li>Android platform architecture</li>
+          <li>High-performance runtime tuning</li>
+          <li>Developer-centric tooling</li>
+        </ul>
+      </aside>
     </section>
 
-    <section id="about" class="panel">
-      <h2>About</h2>
-      <p>프로필 내용은 `CV.docx`를 바탕으로 다음 루프에서 정리한다.</p>
+    <section class="panel stats-grid" aria-label="Profile highlights">
+      <article class="stat-card">
+        <span>Profile</span>
+        <strong>Principal Software Engineer</strong>
+        <p>System architecture, platform integration, and on-device AI.</p>
+      </article>
+      <article class="stat-card">
+        <span>Scope</span>
+        <strong>Mobile + Backend</strong>
+        <p>Android internals, APIs, Docker pipelines, PostgreSQL, Prisma.</p>
+      </article>
+      <article class="stat-card">
+        <span>Delivery</span>
+        <strong>Flagship Devices</strong>
+        <p>Large-scale integration work across mobile platform releases.</p>
+      </article>
     </section>
 
-    <section id="skills" class="panel">
-      <h2>Skills</h2>
-      <ul class="chips">
-        <li>HTML</li>
-        <li>CSS</li>
-        <li>JavaScript</li>
-      </ul>
+    <section id="about" class="panel content-grid">
+      <div class="section-heading">
+        <p class="eyebrow">About</p>
+        <h2>Profile summary</h2>
+      </div>
+      <div class="content-card">
+        <p>
+          DONGHYUN CHO / Principal Software Engineer &amp; System Architect.
+          CV 기반으로 확인 가능한 핵심은 Android OS internals, Treble/HAL, Binder IPC,
+          on-device AI runtime, backend scalability, and cross-functional leadership이다.
+        </p>
+      </div>
+      <div class="content-card">
+        <p>
+          연락처 상세값은 `CV.docx`에 이메일/전화번호 placeholder가 있어
+          공개용 사이트에는 [사람 확인 필요]로 남긴다.
+        </p>
+      </div>
+    </section>
+
+    <section id="projects" class="panel content-grid">
+      <div class="section-heading">
+        <p class="eyebrow">Projects</p>
+        <h2>Selected work</h2>
+      </div>
+      <article class="content-card project-card">
+        <h3>On-Device Generative AI Platform Integration</h3>
+        <p>LLM-based agent actions on resource-constrained mobile hardware.</p>
+        <ul>
+          <li>Memory bottlenecks and thread priority conflicts resolution</li>
+          <li>Seamless user-facing AI functionality on device</li>
+        </ul>
+      </article>
+      <article class="content-card project-card">
+        <h3>Backend Infrastructure &amp; Containerization Automation</h3>
+        <p>Containerized development pipelines for CI and analytics tooling.</p>
+        <ul>
+          <li>Docker and Docker Compose based automation</li>
+          <li>Prisma + PostgreSQL schema synchronization pipeline</li>
+        </ul>
+      </article>
+    </section>
+
+    <section id="experience" class="panel content-grid">
+      <div class="section-heading">
+        <p class="eyebrow">Experience</p>
+        <h2>Leadership and delivery</h2>
+      </div>
+      <article class="timeline-card">
+        <h3>Samsung Research America</h3>
+        <p class="timeline-role">Principal Software Engineer / Tech Lead</p>
+        <ul>
+          <li>On-device LLM integration and runtime optimization</li>
+          <li>Joint development with core OS partners</li>
+        </ul>
+      </article>
+      <article class="timeline-card">
+        <h3>Samsung Electronics</h3>
+        <p class="timeline-role">Lead Software Architect / Senior Principal Engineer</p>
+        <ul>
+          <li>Android Treble and HAL design</li>
+          <li>Virtual emulator systems and testing workflows</li>
+          <li>High-performance multimedia and wireless display</li>
+        </ul>
+      </article>
+    </section>
+
+    <section id="research" class="panel content-grid">
+      <div class="section-heading">
+        <p class="eyebrow">Research</p>
+        <h2>Technical focus</h2>
+      </div>
+      <article class="content-card">
+        <h3>Platform systems</h3>
+        <p>Android OS internals, AOSP, Treble architecture, HAL, Binder IPC / AIDL.</p>
+      </article>
+      <article class="content-card">
+        <h3>Runtime and AI</h3>
+        <p>On-device LLM integration, ExecuTorch optimization, agentic memory frameworks.</p>
+      </article>
+      <article class="content-card">
+        <h3>Testing and delivery</h3>
+        <p>Virtual device emulation, automated testing frameworks, deployment velocity.</p>
+      </article>
     </section>
 
     <section id="games" class="panel games-panel">
       <div class="section-heading">
-        <h2>Games</h2>
-        <p>지렁이 게임 영역 준비 완료</p>
+        <div>
+          <p class="eyebrow">Games</p>
+          <h2>Snake arena</h2>
+        </div>
+        <p class="game-note">White playfield, colorful food, bonus life pickups.</p>
       </div>
-      <div class="game-shell" aria-label="Game placeholder">
-        <p>게임 화면은 다음 루프에서 추가한다.</p>
+
+      <div class="game-layout">
+        <div class="game-shell">
+          <div class="game-hud" aria-label="Game status">
+            <span>Score <strong data-score>0</strong></span>
+            <span>Best <strong data-best>0</strong></span>
+            <span>Lives <strong data-lives>3</strong></span>
+            <span>Status <strong data-state>Idle</strong></span>
+          </div>
+          <div class="game-stage" data-stage>
+            <canvas id="snake-canvas" width="480" height="480" aria-label="Snake game board"></canvas>
+            <div class="game-overlay" data-overlay>
+              <p>Press Start or move with arrows/WASD.</p>
+            </div>
+          </div>
+          <div class="game-actions">
+            <button type="button" class="button button-primary" data-start>Start</button>
+            <button type="button" class="button button-secondary" data-pause>Pause</button>
+            <button type="button" class="button button-secondary" data-restart>Restart</button>
+          </div>
+          <p class="game-help">
+            방향키/WASD, 모바일 버튼, 스와이프로 조작할 수 있다.
+            반대 방향 입력은 막고, 중복 타이머는 허용하지 않는다.
+          </p>
+        </div>
+
+        <div class="touch-pad" aria-label="Mobile controls">
+          <button type="button" class="touch-button" data-dir="up" aria-label="Move up">▲</button>
+          <div class="touch-row">
+            <button type="button" class="touch-button" data-dir="left" aria-label="Move left">◀</button>
+            <button type="button" class="touch-button touch-center" data-action="pause" aria-label="Pause or resume">⏸</button>
+            <button type="button" class="touch-button" data-dir="right" aria-label="Move right">▶</button>
+          </div>
+          <button type="button" class="touch-button" data-dir="down" aria-label="Move down">▼</button>
+        </div>
       </div>
     </section>
 
-    <section id="contact" class="panel">
-      <h2>Contact</h2>
-      <p>연락처 정보는 추후 `CV.docx` 기준으로 채운다.</p>
+    <section id="contact" class="panel content-grid">
+      <div class="section-heading">
+        <p class="eyebrow">Contact</p>
+        <h2>Reach out</h2>
+      </div>
+      <article class="content-card">
+        <h3>GitHub Pages</h3>
+        <p><a href="https://gr8davidjo.github.io">https://gr8davidjo.github.io</a></p>
+      </article>
+      <article class="content-card">
+        <h3>Repository</h3>
+        <p><a href="https://github.com/gr8davidjo/gr8davidjo.github.io.git">gr8davidjo.github.io.git</a></p>
+      </article>
+      <article class="content-card">
+        <h3>Direct contact</h3>
+        <p>[사람 확인 필요] - `CV.docx`의 공개용 연락처가 확정되면 반영한다.</p>
+      </article>
     </section>
   </main>
 </body>
