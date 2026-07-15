@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap");
+
 :root {
   --bg: #0b0d12;
   --bg-soft: #121621;
@@ -13,8 +15,8 @@
   --radius-xl: 30px;
   --radius-lg: 22px;
   --radius-md: 16px;
-  --font-body: "Inter", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
-  --font-display: "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --font-body: "Manrope", "Inter", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+  --font-display: "Space Grotesk", "Manrope", "Segoe UI", sans-serif;
 }
 
 * {
@@ -36,6 +38,7 @@ body {
   line-height: 1.6;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+  font-optical-sizing: auto;
 }
 
 a {
@@ -107,7 +110,7 @@ a {
   background: linear-gradient(135deg, var(--gold), var(--gold-soft));
   color: #131722;
   font-weight: 800;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.04em;
   box-shadow: 0 12px 30px rgba(199, 162, 75, 0.22);
 }
 
@@ -129,8 +132,9 @@ a {
   background: rgba(255, 255, 255, 0.04);
   color: var(--gold-soft);
   font-size: 0.75rem;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
+  font-weight: 700;
 }
 
 .brand-chip {
@@ -153,9 +157,10 @@ a {
 .eyebrow {
   margin: 0 0 4px;
   text-transform: uppercase;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.16em;
   color: var(--gold-soft);
   font-size: 0.74rem;
+  font-weight: 700;
 }
 
 h1,
@@ -169,23 +174,26 @@ h1,
 h2,
 h3 {
   font-family: var(--font-display);
-  line-height: 1.08;
-  letter-spacing: -0.02em;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
 }
 
 h1 {
   margin-bottom: 2px;
   font-size: 1.2rem;
+  font-weight: 700;
 }
 
 h2 {
   font-size: clamp(1.8rem, 4vw, 3.6rem);
   margin-bottom: 12px;
+  font-weight: 700;
 }
 
 h3 {
   font-size: 1.15rem;
   margin-bottom: 8px;
+  font-weight: 600;
 }
 
 .site-nav {
@@ -269,7 +277,7 @@ h3 {
   border-radius: 999px;
   text-decoration: none;
   border: 1px solid transparent;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .button-primary {
